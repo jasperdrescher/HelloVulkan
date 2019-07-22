@@ -16,6 +16,9 @@ int main(int argc, char** argv)
 
 	window = glfwCreateWindow(1240, 720, "Hello Vulkan", nullptr, nullptr);
 
+	uint32_t extensionCount = 0;
+	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
