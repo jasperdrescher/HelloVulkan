@@ -21,16 +21,16 @@ set(CMAKE_CXX_STANDARD 17)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Source files
-set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source")
-set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dependencies")
+set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
+set(DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies")
 
 # Executable definition and properties
 file(GLOB_RECURSE SRC
-    "${SRC_DIR}/*.cpp"
+    "${SOURCE_DIR}/*.cpp"
 )
 
 file(GLOB_RECURSE INC
-    "${SRC_DIR}/*.h"
+    "${SOURCE_DIR}/*.h"
 )
 
 add_executable(${PROJECT_NAME} ${SRC} ${INC})
@@ -39,7 +39,7 @@ add_executable(${PROJECT_NAME} ${SRC} ${INC})
 target_link_libraries(${PROJECT_NAME} ${VULKAN_LIB_LIST})
 
 # GLFW
-set(GLFW_DIR "${LIB_DIR}/glfw")
+set(GLFW_DIR "${DEPS_DIR}/glfw")
 set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
 set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
@@ -50,7 +50,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${GLFW_DIR}/include")
 target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
 
 # GLM
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm")
+set(GLM_DIR "${DEPS_DIR}/glm")
+target_include_directories(${PROJECT_NAME} PRIVATE "${GLM_DIR}")
 
 # Add project filters to VS
 add_project_filters(${SRC_DIR} SRC Source)
