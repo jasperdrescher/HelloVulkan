@@ -16,7 +16,7 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 # Definitions files
 set(DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies")
 
-add_executable(${PROJECT_NAME} "Source/main.cpp")
+add_executable(${PROJECT_NAME} "Source/main.cpp" "Source/HelloTriangleApp.h" "Source/HelloTriangleApp.cpp" "Source/SwapChainSupportDetails.h" "Source/QueueFamilyIndices.h")
 
 # Move resources
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/frag.spv" "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/frag.spv" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
