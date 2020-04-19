@@ -1,3 +1,6 @@
+## Custom
+[Oo]ut/
+
 ## Ignore CMake temporary files, and build results
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/CMake.gitignore

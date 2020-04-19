@@ -1,16 +1,6 @@
 # Minimum CMake version
 cmake_minimum_required(VERSION 3.7)
 
-# Custom macro function to add project filters
-macro(add_project_filters path input_list prepend)
-  foreach(_source IN ITEMS ${${input_list}})
-    get_filename_component(_source_path "${_source}" PATH)
-    file(RELATIVE_PATH _source_path_rel "${path}" "${_source_path}")
-    string(REPLACE "/" "\\" _group_path "${prepend}/${_source_path_rel}")
-    source_group("${_group_path}" FILES "${_source}")
-  endforeach()
-endmacro()
-
 # Generated project name
 project(HelloVulkan)
 
@@ -38,6 +28,14 @@ add_executable(${PROJECT_NAME} ${SRC} ${INC})
 # Link the debug and release libraries to the project
 target_link_libraries(${PROJECT_NAME} ${VULKAN_LIB_LIST})
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+
+# Vulkan
+find_package(Vulkan REQUIRED FATAL_ERROR)
+target_compile_definitions(${PROJECT_NAME} PRIVATE VK_USE_PLATFORM_WIN32_KHR)
+target_include_directories(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
+target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
+
 # GLFW
 set(GLFW_DIR "${DEPS_DIR}/glfw")
 set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
@@ -52,10 +50,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
 # GLM
 set(GLM_DIR "${DEPS_DIR}/glm")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLM_DIR}")
-
-# Add project filters to VS
-add_project_filters(${SRC_DIR} SRC Source)
-add_project_filters(${SRC_DIR} INC Include)
 
 # Debugging
 message(STATUS "This is the BINARY dir " ${PROJECT_BINARY_DIR})
