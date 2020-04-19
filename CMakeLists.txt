@@ -10,23 +10,16 @@ set(CMAKE_CXX_STANDARD 17)
 # Add filters/folders for the generated projects
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# Source files
-set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+# Definitions files
 set(DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies")
 
-# Executable definition and properties
-file(GLOB_RECURSE SRC
-    "${SOURCE_DIR}/*.cpp"
-)
+add_executable(${PROJECT_NAME} "Source/main.cpp")
 
-file(GLOB_RECURSE INC
-    "${SOURCE_DIR}/*.h"
-)
-
-add_executable(${PROJECT_NAME} ${SRC} ${INC})
-
-# Link the debug and release libraries to the project
-target_link_libraries(${PROJECT_NAME} ${VULKAN_LIB_LIST})
+# Move resources
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/frag.spv" "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/frag.spv" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
