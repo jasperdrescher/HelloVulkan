@@ -1,27 +1,27 @@
-# Minimum CMake version
 cmake_minimum_required(VERSION 3.7)
 
-# Generated project name
 project(HelloVulkan)
 
-# C++ standard (C++17)
+add_definitions(-DUNICODE)
 set(CMAKE_CXX_STANDARD 17)
-
-# Add filters/folders for the generated projects
+set_property(GLOBAL PROPERTY CMAKE_CXX_STANDARD_REQUIRED ON)
+set_property(GLOBAL PROPERTY CMAKE_CXX_EXTENSIONS OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/Source")
 
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+file(GLOB_RECURSE SRC SRC_DIR
+    "${SRC_DIR}/*.cpp"
+    "${SRC_DIR}/*.h"
+    "${SRC_DIR}/*.hpp")
 
-# Definitions files
+add_executable(${PROJECT_NAME} ${SRC})
+
+# Copy shaders
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/Shaders/")
+
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT "${PROJECT_NAME}")
 set(DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies")
-
-add_executable(${PROJECT_NAME} "Source/main.cpp" "Source/HelloTriangleApp.h" "Source/HelloTriangleApp.cpp" "Source/SwapChainSupportDetails.h" "Source/QueueFamilyIndices.h")
-
-# Move resources
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/frag.spv" "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/frag.spv" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
 # Vulkan
 find_package(Vulkan REQUIRED FATAL_ERROR)
@@ -30,7 +30,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
 target_link_libraries(${PROJECT_NAME} Vulkan::Vulkan)
 
 # GLFW
-set(GLFW_DIR "${DEPS_DIR}/glfw")
+set(GLFW_DIR "${DEPS_DIR}/GLFW")
 set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
 set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
@@ -41,9 +41,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${GLFW_DIR}/include")
 target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
 
 # GLM
-set(GLM_DIR "${DEPS_DIR}/glm")
+set(GLM_DIR "${DEPS_DIR}/GLM")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLM_DIR}")
-
-# Debugging
-message(STATUS "This is the BINARY dir " ${PROJECT_BINARY_DIR})
-message(STATUS "This is the SOURCE dir " ${PROJECT_SOURCE_DIR})

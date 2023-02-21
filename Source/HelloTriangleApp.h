@@ -311,6 +311,7 @@ private:
     static std::vector<char> ReadFile(const std::string& aFilename);
 
 private:
+    std::string myResourcesPath;
     GLFWwindow* myWindow;
 
     VkInstance instance;

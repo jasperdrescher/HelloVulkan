@@ -50,6 +50,7 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
 
 void HelloTriangleApp::Run()
 {
+    myResourcesPath = std::filesystem::current_path().generic_string() + "/Debug/Resources/";
     InitializeWindow();
     InitializeVulkan();
     MainLoop();
@@ -363,11 +364,8 @@ void HelloTriangleApp::CreateSwapChain()
 
 void HelloTriangleApp::CreateGraphicsPipeline()
 {
-    std::string currentPath = std::filesystem::current_path().generic_string().c_str();
-    std::cout << "Current path: " << currentPath.c_str() << std::endl;
-
-    auto vertShaderCode = ReadFile(currentPath + "/Debug/vert.spv");
-    auto fragShaderCode = ReadFile(currentPath + "/Debug/frag.spv");
+    auto vertShaderCode = ReadFile(myResourcesPath + "Shaders/vert.spv");
+    auto fragShaderCode = ReadFile(myResourcesPath + "Shaders/frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
