@@ -2,12 +2,13 @@
 #include "QueueFamilyIndices.h"
 #include "SwapChainSupportDetails.h"
 
-#include <iostream>
-#include <fstream>
 #include <algorithm>
-#include <cstring>
-#include <cstdlib>
 #include <cstdint>
+#include <cstdlib>
+#include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <optional>
 #include <set>
 
@@ -362,8 +363,11 @@ void HelloTriangleApp::CreateSwapChain()
 
 void HelloTriangleApp::CreateGraphicsPipeline()
 {
-    auto vertShaderCode = ReadFile("vert.spv");
-    auto fragShaderCode = ReadFile("frag.spv");
+    std::string currentPath = std::filesystem::current_path().generic_string().c_str();
+    std::cout << "Current path: " << currentPath.c_str() << std::endl;
+
+    auto vertShaderCode = ReadFile(currentPath + "/Debug/vert.spv");
+    auto fragShaderCode = ReadFile(currentPath + "/Debug/frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);

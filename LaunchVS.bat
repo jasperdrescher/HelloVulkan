@@ -1,0 +1,1 @@
+start Generated/HelloVulkan.sln
