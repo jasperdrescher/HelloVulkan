@@ -80,12 +80,11 @@ HelloTriangleApp::HelloTriangleApp()
     , myCurrentFrameIndex(0)
     , myIsFramebufferResized(false)
 {
+    myResourcesPath = std::filesystem::current_path().generic_string() + "/Debug/Resources/";
 }
 
 void HelloTriangleApp::Run()
 {
-    myResourcesPath = std::filesystem::current_path().generic_string() + "/Debug/Resources/";
-
     InitializeWindow();
     InitializeVulkan();
     MainLoop();
