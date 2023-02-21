@@ -383,9 +383,7 @@ void HelloTriangleApp::CreateSwapChain()
     createInfo.clipped = VK_TRUE;
 
     if (vkCreateSwapchainKHR(myVkDevice, &createInfo, nullptr, &myVkSwapChain) != VK_SUCCESS)
-    {
         throw std::runtime_error("failed to create swap chain!");
-    }
 
     vkGetSwapchainImagesKHR(myVkDevice, myVkSwapChain, &imageCount, nullptr);
     myVkSwapChainImages.resize(imageCount);
@@ -417,9 +415,7 @@ void HelloTriangleApp::CreateImageViews()
         createInfo.subresourceRange.layerCount = 1;
 
         if (vkCreateImageView(myVkDevice, &createInfo, nullptr, &myVkSwapChainImageViews[i]) != VK_SUCCESS)
-        {
             throw std::runtime_error("failed to create image views!");
-        }
     }
 }
 
