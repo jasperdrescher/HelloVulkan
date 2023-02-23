@@ -21,7 +21,7 @@ add_executable(${PROJECT_NAME} ${SRC})
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/Shaders/")
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT "${PROJECT_NAME}")
-set(DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies")
+set(DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Submodules")
 
 # Vulkan
 find_package(Vulkan REQUIRED FATAL_ERROR)
